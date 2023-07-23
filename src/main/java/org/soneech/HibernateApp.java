@@ -17,15 +17,16 @@ public class HibernateApp {
         try {
             session.beginTransaction();
 
-            Person person1 = new Person("Test1", 30);
-            Person person2 = new Person("Test2", 20);
-            Person person3 = new Person("Test3", 25);
+            Person person = session.get(Person.class, 2);
+            person.setName("Sony");  // automatically writes to DB
+            person.setAge(21);
 
+            Person person1 = new Person("Mike", 20);
             session.persist(person1);
-            session.persist(person2);
-            session.persist(person3);
 
             session.getTransaction().commit();
+
+            System.out.println(person1.getId());  // updates object - set id
         } finally {
             sessionFactory.close();
         }
