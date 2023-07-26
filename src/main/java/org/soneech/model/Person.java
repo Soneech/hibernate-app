@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name = "person")
+@Table(name = "Person")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,6 +18,9 @@ public class Person {
     private int id;
     private String name;
     private int age;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
 
     public Person(String name, int age) {
         this.name = name;
