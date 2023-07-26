@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.soneech.model.Person;
 
+import java.util.List;
+
 public class HibernateApp {
     public static void main( String[] args ) {
         // + Automatically reads properties from hibernate.properties
@@ -17,16 +19,15 @@ public class HibernateApp {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 2);
-            person.setName("Sony");  // automatically writes to DB
-            person.setAge(21);
+            // HQL work with entity
+            List<Person> people = session.createQuery("FROM Person WHERE name LIKE 'T%'").getResultList();
+            for (Person person: people) {
+                System.out.println(person);
+            }
 
-            Person person1 = new Person("Mike", 20);
-            session.persist(person1);
+            session.createQuery("update Person set name='Test' where age > 25").executeUpdate();
 
             session.getTransaction().commit();
-
-            System.out.println(person1.getId());  // updates object - set id
         } finally {
             sessionFactory.close();
         }
