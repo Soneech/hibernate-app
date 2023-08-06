@@ -4,30 +4,36 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Person")
+@Table
 @NoArgsConstructor
 @Getter
 @Setter
-public class Person {
+public class Director {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private int age;
 
-    @OneToOne(mappedBy = "person", cascade = CascadeType.PERSIST)
-    private Passport passport;
+    @OneToMany(mappedBy = "director", cascade = CascadeType.PERSIST)
+    private List<Movie> movies;
 
-
-    public Person(String name, int age) {
+    public Director(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public void addMovie(Movie movie) {
+        if (movies == null) {
+            movies = new ArrayList<>();
+        }
+        movies.add(movie);
+        movie.setDirector(this);
     }
 
     @Override
