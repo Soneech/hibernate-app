@@ -7,9 +7,6 @@ import org.hibernate.cfg.Configuration;
 import org.soneech.model.Item;
 import org.soneech.model.Person;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class HibernateApp {
     public static void main( String[] args ) {
@@ -24,17 +21,12 @@ public class HibernateApp {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 3);
-            System.out.println(person);
-            Item item = new Item("Lamp", person);
-            person.getItems().add(item);  // good practice (due to Hibernate caching)
-            session.persist(item);
+            Person person = new Person("Test cascading 1", 30);
+            person.addItem(new Item("Item 1"));
+            person.addItem(new Item("Item 2"));
+            person.addItem(new Item("Item 3"));
 
-            Person person1 = new Person("Ann", 25);
-            Item item1 = new Item("Pen", person1);
-            person1.setItems(new ArrayList<>(Collections.singletonList(item1)));
-            session.persist(person1);
-            session.persist(item1);
+            session.persist(person);  // persist cascading doesn't work with the 'save()' method
 
             session.getTransaction().commit();
         } finally {
