@@ -6,28 +6,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Item")
+@Table
 @NoArgsConstructor
 @Getter
 @Setter
-public class Item {
+public class Passport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    private String itemName;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
-    private Person owner;
+    private Person person;
 
-    public Item(String itemName) {
-        this.itemName = itemName;
-    }
+    @Column(name = "passport_number")
+    private int passportNumber;
 
-    @Override
-    public String toString() {
-        return itemName;
+    public Passport(Person person, int passportNumber) {
+        this.person = person;
+        this.passportNumber = passportNumber;
     }
 }

@@ -21,21 +21,13 @@ public class Person {
     private String name;
     private int age;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)  // saving (persist method)
-    // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE) // saving (save method - deprecated)
-    private List<Item> items;
+    @OneToOne(mappedBy = "person", cascade = CascadeType.PERSIST)
+    private Passport passport;
+
 
     public Person(String name, int age) {
         this.name = name;
         this.age = age;
-    }
-
-    public void addItem(Item item) {
-        if (items == null) {
-            items = new ArrayList<>();
-        }
-        items.add(item);
-        item.setOwner(this);
     }
 
     @Override

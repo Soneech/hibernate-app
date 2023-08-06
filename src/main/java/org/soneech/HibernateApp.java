@@ -4,7 +4,7 @@ package org.soneech;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.soneech.model.Item;
+import org.soneech.model.Passport;
 import org.soneech.model.Person;
 
 
@@ -13,7 +13,7 @@ public class HibernateApp {
         // + Automatically reads properties from hibernate.properties
         Configuration configuration = new Configuration()
                 .addAnnotatedClass(Person.class)
-                .addAnnotatedClass(Item.class);
+                .addAnnotatedClass(Passport.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
@@ -21,12 +21,8 @@ public class HibernateApp {
         try {
             session.beginTransaction();
 
-            Person person = new Person("Test cascading 1", 30);
-            person.addItem(new Item("Item 1"));
-            person.addItem(new Item("Item 2"));
-            person.addItem(new Item("Item 3"));
-
-            session.persist(person);  // persist cascading doesn't work with the 'save()' method
+            Person person = session.get(Person.class, 6);
+            session.remove(person);
 
             session.getTransaction().commit();
         } finally {
